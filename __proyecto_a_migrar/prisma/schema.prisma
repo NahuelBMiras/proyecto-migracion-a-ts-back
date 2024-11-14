@@ -1,0 +1,99 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Benefits {
+  id                 Int  @id @default(autoincrement())
+  discountPercentage Float
+  locals             String
+  coupons            Coupon[]
+
+  @@map("benefits")
+}
+
+
+// Modelo de cupones
+model Coupon {
+  id             Int   @id @default(autoincrement())
+  userId         Int?
+  benefitsId     Int?
+  code           String   @unique
+  discountValue  Float
+  expirationDate DateTime
+  user           User?    @relation(fields: [userId], references: [id])
+  benefits       Benefits? @relation(fields: [benefitsId], references: [id])
+  @@map("coupon")
+}
+
+
+// Modelo de materiales
+model Material {
+  id          Int  @id @default(autoincrement())
+  name        String
+  pointsPerKg Int
+  details     TransactionDetail[]
+  @@map("material")
+}
+
+// Modelo de puntos de reciclaje
+model RecyclingPoint {
+  id          Int  @id @default(autoincrement())
+  name        String?
+  address     String?
+  contact     String?
+  openingHours String?
+  transactions Transaction[]
+
+  @@map("recycling_point")
+}
+
+// Modelo de transacciones
+model Transaction {
+  id                Int  @id @default(autoincrement())
+  userId            Int
+  recyclingPointId  Int?
+  adminId           Int?
+  transactionDate   DateTime? @default(now())
+  totalPoints       Int?
+  user              User?    @relation("UserTransactions", fields: [userId], references: [id])
+  admin             User?    @relation("AdminTransactions", fields: [adminId], references: [id])
+  recyclingPoint    RecyclingPoint? @relation(fields: [recyclingPointId], references: [id])
+  state             Boolean?
+  details           TransactionDetail[]
+  @@map("transaction")
+}
+
+// Modelo de detalles de transacciones
+model TransactionDetail {
+  id            Int  @id @default(autoincrement())
+  transactionId Int?
+  materialId    Int?
+  weight        Float?
+  points        Int?
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  material      Material?    @relation(fields: [materialId], references: [id])
+  @@map("transaction_detail")
+}
+
+// Modelo de usuarios
+model User {
+  id          Int  @id @default(autoincrement())
+  name        String
+  username    String   @unique
+  email       String   @unique
+  password    String
+  role        String
+  points      Int      @default(0)
+  coupons     Coupon[]
+  transactions Transaction[] @relation("UserTransactions")
+  adminTransactions Transaction[] @relation("AdminTransactions")
+  @@map("users")
+}
+
