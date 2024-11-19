@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import HTTP_STATUS from "../helpers/httpStatus.js";
+import type { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export const getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const user = await prisma.user.findUnique({
@@ -29,7 +30,7 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const updateUserPoints = async (req, res) => {
+export const updateUserPoints = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { points } = req.body;

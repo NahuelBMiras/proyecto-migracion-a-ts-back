@@ -1,11 +1,12 @@
 import { CohereClient } from 'cohere-ai';
-import predefinedQuestions from '../utils/chatbot/questions.json' assert { type: 'json' };
+import predefinedQuestions from '../utils/chatbot/questions.jsonwebtoken' assert { type: 'json' };
+import type { Request, Response, NextFunction } from 'express';
 
 const cohere = new CohereClient({
     token: process.env.COHERE_API_KEY,
 });
 
-export const handleRecyclingQuestion = async (req, res, next) => {
+export const handleRecyclingQuestion = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { question } = req.body;
 

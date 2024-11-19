@@ -1,4 +1,4 @@
 node_modules
-package-look.json
 .vscode
 .env
+package-lock.json

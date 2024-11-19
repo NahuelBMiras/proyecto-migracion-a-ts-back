@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import HTTP_STATUS from "../helpers/httpStatus.js";
+import type { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
 // obtener cupones 
-export const getCoupons = async (req, res) => {
+export const getCoupons = async (req: Request, res: Response) => {
   const userId = parseInt(req.user.id, 10); //  autenticación del usuario
   try {
     // Obtener cupones disponibles y los puntos del usuario
@@ -40,7 +41,7 @@ export const getCoupons = async (req, res) => {
 };
 
 // canjear cupones
-export const redeemCoupon = async (req, res) => {
+export const redeemCoupon = async (req: Request, res: Response) => {
   console.log(req.user);
   console.log("solicitud recibida para el canje de cupon ", req.body);
 

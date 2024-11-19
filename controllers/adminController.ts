@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import HTTP_STATUS from "../helpers/httpStatus.js";
+import type { Request, Response } from "express"
 
 const prisma = new PrismaClient();
 
-export const searchUser = async (req, res) => {
+export const searchUser = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   try {
@@ -23,7 +24,7 @@ export const searchUser = async (req, res) => {
   }
 };
 
-export const addPoints = async (req, res) => {
+export const addPoints = async (req: Request, res: Response) => {
   const { userId, points, weights } = req.body;
 
   try {

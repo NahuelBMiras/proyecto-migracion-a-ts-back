@@ -1,7 +1,8 @@
-import { verifyToken } from '../utils/tokenManagement.js';
-import HTTP_STATUS from '../helpers/httpStatus.js';
+import { verifyToken } from '../utils/tokenManagement';
+import HTTP_STATUS from '../helpers/httpStatus';
+import type { Request, Response, NextFunction } from "express";
 
-const userMiddleware = (req, res, next) => {
+const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   
   if (!token) {

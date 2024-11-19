@@ -1,6 +1,7 @@
-import HTTP_STATUS from '../helpers/httpStatus.js';
+import HTTP_STATUS from '../helpers/httpStatus';
+import type { Request, Response, NextFunction } from "express";
 
-const adminMiddleware = (req, res, next) => {
+const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (req.user && req.user.role === 'admin') {
     next();
   } else {
