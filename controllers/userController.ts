@@ -4,7 +4,7 @@ import type { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export const getUser = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response): Promise<void> => {  // Aseguramos que retorne void
   try {
     const { id } = req.params;
     const user = await prisma.user.findUnique({
@@ -16,9 +16,8 @@ export const getUser = async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      return res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: "User not found" });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: "User not found" });
+      return;  // Aseguramos que terminamos la ejecución aquí
     }
 
     res.status(HTTP_STATUS.OK).json(user.points);
@@ -30,7 +29,7 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUserPoints = async (req: Request, res: Response) => {
+export const updateUserPoints = async (req: Request, res: Response): Promise<void> => {  // Aseguramos que retorne void
   try {
     const { id } = req.params;
     const { points } = req.body;

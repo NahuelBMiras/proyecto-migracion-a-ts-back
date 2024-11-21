@@ -1,8 +1,9 @@
 import Joi from "joi";
 import HTTP_STATUS from "../helpers/httpStatus";
-import { Request, Response, NextFunction } from "express"; 
+import { Request, Response, NextFunction } from "express";
 
-export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
+// Aseguramos que la función retorna void
+export const validateRegister = (req: Request, res: Response, next: NextFunction): void => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     username: Joi.string().min(3).required(),
@@ -12,11 +13,12 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
   });
 
   const { error } = schema.validate(req.body);
+  
   if (error) {
-    return res
-      .status(HTTP_STATUS.BAD_REQUEST)
-      .json({ message: error.details[0].message });
+    // En caso de error, respondemos con el mensaje
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ message: error.details[0].message });
+    return;  // Importante: no llamamos a next() si hay error
   }
 
-  next();
+  next();  // Si no hay error, pasamos al siguiente middleware
 };

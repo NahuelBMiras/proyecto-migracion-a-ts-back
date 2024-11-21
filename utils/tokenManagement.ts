@@ -1,17 +1,22 @@
+// utils/tokenManagement.ts
 import jwt from "jsonwebtoken";
+import { CustomJwtPayload } from "../types/types"; // Asegúrate de importar desde el archivo correcto
 
-export const generateToken = (user) => {
-  // Convertir BigInt a string
+// La función para generar el token
+export const generateToken = (user: { id: number | BigInt, role: string }): string => {
   const userId = user.id.toString();
-  return jwt.sign({ id: userId, role: user.role }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: userId, role: user.role }, process.env.JWT_SECRET!, {
     expiresIn: "1d",
   });
 };
 
-export const verifyToken = (token) => {
+// La función para verificar el token
+export const verifyToken = (token: string): CustomJwtPayload | null => {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as CustomJwtPayload;
+    return decoded;
   } catch (error) {
     return null;
   }
 };
+
