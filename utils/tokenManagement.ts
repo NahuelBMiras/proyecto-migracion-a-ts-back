@@ -1,6 +1,11 @@
+import { BodyUserType } from "@/types/user";
 import jwt from "jsonwebtoken";
 
-export const generateToken = (user) => {
+type IdParams = {
+  id: number
+}
+
+export const generateToken = (user: BodyUserType & IdParams) => {
   // Convertir BigInt a string
   const userId = user.id.toString();
   return jwt.sign({ id: userId, role: user.role }, process.env.JWT_SECRET, {
@@ -8,7 +13,7 @@ export const generateToken = (user) => {
   });
 };
 
-export const verifyToken = (token) => {
+export const verifyToken = (token: string) => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {

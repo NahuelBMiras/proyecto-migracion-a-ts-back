@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleRecyclingQuestion } from '../controllers/chatbotController.js';
+import { handleRecyclingQuestion } from '../controllers/chatbotController';
 
 const router = express.Router();
 
