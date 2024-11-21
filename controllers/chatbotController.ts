@@ -1,5 +1,5 @@
 import { CohereClient } from 'cohere-ai';
-import predefinedQuestions from '../utils/chatbot/questions.jsonwebtoken' assert { type: 'json' };
+import predefinedQuestions from '@/utils/chatbot/question.json'
 import type { Request, Response, NextFunction } from 'express';
 
 const cohere = new CohereClient({
