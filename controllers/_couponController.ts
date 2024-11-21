@@ -4,12 +4,11 @@ import type { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-// obtener cupones 
-export const getCoupons = async (req: Request, res: Response) => {
+// Obtener cupones
+export const getCoupons = async (req: Request, res: Response): Promise<void> => { 
   if (!req.user) {
-    return res
-      .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: "Usuario no autenticado" });
+    res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: "Usuario no autenticado" });
+    return; // Termina la ejecución aquí
   }
 
   const userId = parseInt(req.user.id, 10); // Autenticación del usuario
@@ -29,29 +28,25 @@ export const getCoupons = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: "Usuario no encontrado" });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Usuario no encontrado" });
+      return;
     }
 
-    return res.status(HTTP_STATUS.OK).json({
+    res.status(HTTP_STATUS.OK).json({
       availablePoints: user.points,
       coupons,
     });
   } catch (error) {
     console.error(error);
-    return res
-      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error al obtener cupones" });
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Error al obtener cupones" });
   }
 };
 
-// canjear cupones
-export const redeemCoupon = async (req: Request, res: Response) => {
+// Canjear cupones
+export const redeemCoupon = async (req: Request, res: Response): Promise<void> => { 
   if (!req.user) {
-    return res
-      .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: "Usuario no autenticado" });
+    res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: "Usuario no autenticado" });
+    return;
   }
 
   console.log(req.user);
@@ -70,9 +65,8 @@ export const redeemCoupon = async (req: Request, res: Response) => {
 
     if (!coupon || new Date(coupon.expirationDate) < new Date()) {
       console.log("cupon no valido o expirado");
-      return res
-        .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: "Cupón no válido o expirado" });
+      res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Cupón no válido o expirado" });
+      return;
     }
 
     // Obtener el usuario
@@ -82,16 +76,14 @@ export const redeemCoupon = async (req: Request, res: Response) => {
     console.log("usuario encontrado", user);
 
     if (!user) {
-      return res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: "Usuario no encontrado" });
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Usuario no encontrado" });
+      return;
     }
 
     if (user.points < coupon.discountValue) {
       console.log("puntos insuficientes");
-      return res
-        .status(HTTP_STATUS.BAD_REQUEST)
-        .json({ message: "Puntos insuficientes" });
+      res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Puntos insuficientes" });
+      return;
     }
 
     // Transacción para restar puntos y canjear el cupón
@@ -107,13 +99,9 @@ export const redeemCoupon = async (req: Request, res: Response) => {
     ]);
 
     console.log("canje de puntos exitoso");
-    return res
-      .status(HTTP_STATUS.OK)
-      .json({ message: "Cupón canjeado con éxito" });
+    res.status(HTTP_STATUS.OK).json({ message: "Cupón canjeado con éxito" });
   } catch (error) {
     console.error(error);
-    return res
-      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error al canjear cupón" });
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Error al canjear cupón" });
   }
 };

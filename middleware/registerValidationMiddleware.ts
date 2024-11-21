@@ -1,7 +1,8 @@
 import Joi from "joi";
 import HTTP_STATUS from "../helpers/httpStatus";
+import { Request, Response, NextFunction } from "express"; 
 
-export const validateRegister = (req, res, next) => {
+export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     username: Joi.string().min(3).required(),
