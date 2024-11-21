@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import HTTP_STATUS from "../helpers/httpStatus.js";
+import HTTP_STATUS from "../helpers/httpStatus";
 import type { Request, Response } from "express"
 
 const prisma = new PrismaClient();

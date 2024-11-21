@@ -1,11 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { hashPassword, comparePassword } from "../utils/bcrypt.js";
-import { generateToken } from "../utils/tokenManagement.js";
-import HTTP_STATUS from "../helpers/httpStatus.js";
+import { hashPassword, comparePassword } from "@/utils/bcrypt";
+import { generateToken } from "@/utils/tokenManagement";
+import HTTP_STATUS from "../helpers/httpStatus";
+import { Request, Response } from "express";
+import { BodyUserType, RegisterType} from "@/types/user";
 
 const prisma = new PrismaClient();
 // Registro de usuario
-export const register = async (req, res) => {
+export const register = async (req: Request<unknown, unknown, RegisterType>, res: Response) => {
   console.log('Método de la solicitud:', req.method);
   console.log('Datos recibidos:', req.body);
   const { name, username, email, password, confirmPassword } = req.body;
@@ -42,7 +44,6 @@ export const register = async (req, res) => {
       .json({ message: "Usuario registrado exitosamente", user: newUser });
   } catch (error) {
     console.log(error)
-    console.log('req.user:', req.user);
     return res
       .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
       .json({ message: "Error al registrar usuario", error });
@@ -50,7 +51,7 @@ export const register = async (req, res) => {
 };
 
 // Login de usuario
-export const login = async (req, res) => {
+export const login = async (req: Request<unknown, unknown, Pick <RegisterType, "email" | "password">>, res: Response) => {
   const { email, password } = req.body;
 
   try {
@@ -75,8 +76,10 @@ export const login = async (req, res) => {
       .status(HTTP_STATUS.OK)
       .json({ message: "tokens generado", token, userId:user.id, role:user.role });
   } catch (error) {
+    if (error instanceof Error) {
     return res
       .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
       .json({ message: "Error al iniciar sesión", error: error.message });
+    }
   }
 };
