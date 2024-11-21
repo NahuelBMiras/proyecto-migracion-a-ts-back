@@ -4,20 +4,23 @@ import type { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
 
+interface Material {
+  id: number;
+}
+
 export const confirmRecycling = async (req: Request, res: Response) => {
-    console.log(req.body);
   const { materials, location } = req.body;
-  const userId = req?.userId;
+  const userId = req?.user?.id;
 
   try {
     const transaction = await prisma.transaction.create({
       data: {
-        userId: userId,
+        userId: Number(userId),
         recyclingPointId: location.id,
         totalPoints: 0,
         state: false,
         details: {
-          create: materials.map(material => ({
+          create: materials.map((material: Material) => ({
             materialId: material.id,
           }))
         }

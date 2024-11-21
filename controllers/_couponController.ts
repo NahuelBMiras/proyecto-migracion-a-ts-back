@@ -6,14 +6,20 @@ const prisma = new PrismaClient();
 
 // obtener cupones 
 export const getCoupons = async (req: Request, res: Response) => {
-  const userId = parseInt(req.user.id, 10); //  autenticación del usuario
+  if (!req.user) {
+    return res
+      .status(HTTP_STATUS.UNAUTHORIZED)
+      .json({ message: "Usuario no autenticado" });
+  }
+
+  const userId = parseInt(req.user.id, 10); // Autenticación del usuario
+
   try {
-    // Obtener cupones disponibles y los puntos del usuario
     const coupons = await prisma.coupon.findMany({
       where: {
-        userId: null, //aun no canjeados
+        userId: null, // Aún no canjeados
         expirationDate: {
-          gte: new Date(), //  cupones no expirados
+          gte: new Date(), // Cupones no expirados
         },
       },
     });
@@ -42,11 +48,17 @@ export const getCoupons = async (req: Request, res: Response) => {
 
 // canjear cupones
 export const redeemCoupon = async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res
+      .status(HTTP_STATUS.UNAUTHORIZED)
+      .json({ message: "Usuario no autenticado" });
+  }
+
   console.log(req.user);
   console.log("solicitud recibida para el canje de cupon ", req.body);
 
   const { couponCode } = req.body;
-  const userId = parseInt(req.user.id, 10); // si ya esta la  autenticación configurada
+  const userId = parseInt(req.user.id, 10); // ahora sabemos que req.user no es undefined
 
   try {
     // Buscar el cupón
@@ -93,6 +105,7 @@ export const redeemCoupon = async (req: Request, res: Response) => {
         data: { userId: userId },
       }),
     ]);
+
     console.log("canje de puntos exitoso");
     return res
       .status(HTTP_STATUS.OK)
