@@ -2,10 +2,10 @@
   "name": "proyecto-migracion-a-ts-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "start": "node dist/index",
+    "dev": "ts-node-dev index.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -20,15 +20,19 @@
     "nodemon": "^3.1.7",
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "bcrypt": "^5.1.1",
     "cohere-ai": "^7.14.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-jwt": "^8.4.1",
     "joi": "^17.13.3",
-    "proyecto-migracion-a-ts-back": "file:"
+    "proyecto-migracion-a-ts-back": "file:",
+    "tsconfig-paths": "^4.2.0"
   }
 }

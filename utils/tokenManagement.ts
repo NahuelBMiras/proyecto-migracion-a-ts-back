@@ -1,6 +1,6 @@
 // utils/tokenManagement.ts
 import jwt from "jsonwebtoken";
-import { CustomJwtPayload } from "../types/types"; // Asegúrate de importar desde el archivo correcto
+import { CustomJwtPayload } from "../@types/types"; // Asegúrate de importar desde el archivo correcto
 
 // La función para generar el token
 export const generateToken = (user: { id: number | BigInt, role: string }): string => {

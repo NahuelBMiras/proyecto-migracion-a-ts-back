@@ -1,6 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
-import HTTP_STATUS from "../helpers/httpStatus.js";
+import HTTP_STATUS from "../helpers/httpStatus";
 import type { Request, Response } from "express"
+import { CustomRequest } from "../@types/express";
 
 interface AddPointsRequestBody {
   userId: string;
@@ -10,7 +11,7 @@ interface AddPointsRequestBody {
 
 const prisma = new PrismaClient();
 
-export const searchUser = async (req: Request, res: Response): Promise<void> => {
+export const searchUser = async (req: CustomRequest, res: Response): Promise<void> => {
   const { email } = req.body;
 
   try {
@@ -31,7 +32,7 @@ export const searchUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const addPoints = async (req: Request, res: Response): Promise<void> => {
+export const addPoints = async (req: CustomRequest, res: Response): Promise<void> => {
   const { userId, points, weights }: AddPointsRequestBody = req.body;
 
   if (!req.user || typeof req.user.id !== 'string') {

@@ -1,6 +1,6 @@
 import express from 'express';
-import { searchUser, addPoints } from '../controllers/adminController.js';
-import userMiddleware from '../middleware/authMiddleware.js';
+import { searchUser, addPoints } from '../controllers/adminController';
+import userMiddleware from '../middleware/authMiddleware';
 
 const router = express.Router();
 

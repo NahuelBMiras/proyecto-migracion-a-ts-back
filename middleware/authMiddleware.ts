@@ -1,9 +1,10 @@
 import { verifyToken } from "../utils/tokenManagement";
 import HTTP_STATUS from "../helpers/httpStatus";
 import type { Request, Response, NextFunction } from "express";
-import { CustomJwtPayload } from "../types/types"; // Asegúrate de importar la interfaz correctamente
+import { CustomJwtPayload } from "../@types/types"; // Asegúrate de importar la interfaz correctamente
+import { CustomRequest } from "../@types/express";
 
-const userMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+const userMiddleware = (req: CustomRequest, res: Response, next: NextFunction): void => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {

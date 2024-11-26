@@ -1,14 +1,14 @@
 import express from 'express'
 import cors from 'cors';
 import dotenv from 'dotenv';
-import errorMiddleware  from './middleware/errorMiddleware.js';
-import  authRoutes  from './routes/authRoutes.js';
-import recyclingRoutes from './routes/recyclingRoutes.js';
-import { confirmRecycling } from './controllers/recyclingController.js';
-//import couponRoutes  from './routes/couponRoutes.js';
-import adminRoutes from './routes/adminRoutes.js';
-import chatbotRoutes from './routes/chatbotRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import errorMiddleware  from './middleware/errorMiddleware';
+import  authRoutes  from './routes/authRoutes';
+import recyclingRoutes from './routes/recyclingRoutes';
+import { confirmRecycling } from './controllers/recyclingController';
+//import couponRoutes  from './routes/couponRoutes';
+import adminRoutes from './routes/adminRoutes';
+import chatbotRoutes from './routes/chatbotRoutes';
+import userRoutes from './routes/userRoutes';
 
 
 dotenv.config()

@@ -1,8 +1,10 @@
 import { verifyToken } from "../utils/tokenManagement";
 import HTTP_STATUS from "../helpers/httpStatus";
 import type { Request, Response, NextFunction } from "express";
+import { CustomRequest } from "../@types/express";
 
-const userMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+
+const userMiddleware = (req: CustomRequest, res: Response, next: NextFunction): void => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
@@ -16,9 +18,8 @@ const userMiddleware = (req: Request, res: Response, next: NextFunction): void =
     return; // Lo mismo aquí, terminamos la ejecución después de enviar la respuesta
   }
 
-  req.user = decoded; // Si todo es válido, pasamos el token decodificado
+  req.user = decoded; // Ahora TypeScript reconoce la propiedad `user`
   next(); // Llamamos a `next()` para que el flujo siga
 };
 
 export default userMiddleware;
-

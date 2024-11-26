@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import HTTP_STATUS from '../helpers/httpStatus.js';
+import HTTP_STATUS from '../helpers/httpStatus';
 import type { Request, Response } from 'express';
+import { CustomRequest } from '../@types/express';
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,7 @@ interface Material {
   id: number;
 }
 
-export const confirmRecycling = async (req: Request, res: Response) => {
+export const confirmRecycling = async (req: CustomRequest, res: Response) => {
   const { materials, location } = req.body;
   const userId = req?.user?.id;
 

@@ -1,7 +1,8 @@
 import HTTP_STATUS from '../helpers/httpStatus';
 import type { Request, Response, NextFunction } from "express";
+import { CustomRequest } from '../@types/express';
 
-const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const adminMiddleware = (req: CustomRequest, res: Response, next: NextFunction) => {
   if (req.user && req.user.roles.includes('admin')) {
     next();
   } else {
