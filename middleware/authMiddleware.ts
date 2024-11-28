@@ -1,6 +1,6 @@
 import { verifyToken } from "../utils/tokenManagement";
 import HTTP_STATUS from "../helpers/httpStatus";
-import type { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
 import { CustomJwtPayload } from "../@types/types"; // Asegúrate de importar la interfaz correctamente
 import { CustomRequest } from "../@types/express";
 

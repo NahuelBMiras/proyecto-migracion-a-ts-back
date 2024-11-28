@@ -1,13 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import HTTP_STATUS from "../helpers/httpStatus";
 import type { Request, Response } from "express";
+import { CustomRequest } from "../@types/express";
 
 const prisma = new PrismaClient();
 
 // Obtener cupones
-export const getCoupons = async (req: Request, res: Response): Promise<void> => { 
+export const getCoupons = async (req: CustomRequest, res: Response): Promise<void> => {
   if (!req.user) {
-    res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: "Usuario no autenticado" });
+    res
+      .status(HTTP_STATUS.UNAUTHORIZED)
+      .json({ message: 'Usuario no autenticado' });
     return; // Termina la ejecución aquí
   }
 
@@ -28,7 +31,9 @@ export const getCoupons = async (req: Request, res: Response): Promise<void> => 
     });
 
     if (!user) {
-      res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Usuario no encontrado" });
+      res
+        .status(HTTP_STATUS.NOT_FOUND)
+        .json({ message: 'Usuario no encontrado' });
       return;
     }
 
@@ -38,12 +43,14 @@ export const getCoupons = async (req: Request, res: Response): Promise<void> => 
     });
   } catch (error) {
     console.error(error);
-    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Error al obtener cupones" });
+    res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ message: 'Error al obtener cupones' });
   }
 };
 
 // Canjear cupones
-export const redeemCoupon = async (req: Request, res: Response): Promise<void> => { 
+export const redeemCoupon = async (req: CustomRequest, res: Response): Promise<void> => { 
   if (!req.user) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: "Usuario no autenticado" });
     return;

@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tokenManagement_1 = require("../utils/tokenManagement");
 const httpStatus_1 = __importDefault(require("../helpers/httpStatus"));
 const userMiddleware = (req, res, next) => {
-    var _a;
-    const token = (_a = req.header("Authorization")) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
+    const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
         res.status(httpStatus_1.default.UNAUTHORIZED).json({ message: "Token no proporcionado" });
         return; // Aquí no devolvemos nada, simplemente terminamos el flujo
